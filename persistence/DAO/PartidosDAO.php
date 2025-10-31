@@ -6,30 +6,44 @@ class PartidosDAO extends GenericDAO {
     const TABLA_PARTIDOS = 'partidos';
 
     public function selectByJornada($jornada) {
-        $stmt = $this->conn->prepare("SELECT * FROM " . PartidosDAO::TABLA_PARTIDOS . " WHERE jornada = ?");
+        $sql = "
+            SELECT p.*, 
+                   el.nombre AS local_nombre, 
+                   ev.nombre AS visit_nombre
+            FROM " . self::TABLA_PARTIDOS . " p
+            JOIN equipos el ON p.idLocal = el.id
+            JOIN equipos ev ON p.idVisitante = ev.id
+            WHERE p.jornada = ?
+            ORDER BY p.id
+        ";
+        $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $jornada);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function insert($local, $visitante, $resultado, $jornada, $estadio) {
-        // Validar que no se repitan partidos
-        $check = $this->conn->prepare("SELECT * FROM " . PartidosDAO::TABLA_PARTIDOS . " WHERE local = ? AND visitante = ?");
-        $check->bind_param("ii", $local, $visitante);
+    // Cambiado el orden y tipos de parámetros para coincidir con app/partidos.php
+    public function insert($jornada, $local, $visitante, $estadio, $resultado) {
+        // Validar que no se repitan partidos (misma jornada y mismos equipos)
+        $check = $this->conn->prepare(
+            "SELECT * FROM " . self::TABLA_PARTIDOS . " WHERE idLocal = ? AND idVisitante = ? AND jornada = ?"
+        );
+        $check->bind_param("iii", $local, $visitante, $jornada);
         $check->execute();
         if ($check->get_result()->num_rows > 0) {
             return false; // Ya existe
         }
 
         $stmt = $this->conn->prepare(
-            "INSERT INTO " . PartidosDAO::TABLA_PARTIDOS . " (local, visitante, resultado, jornada, estadio) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO " . self::TABLA_PARTIDOS . " (idLocal, idVisitante, estadio, resultado, jornada) VALUES (?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param("iisis", $local, $visitante, $resultado, $jornada, $estadio);
+        // tipos: i = int (local), i = int (visitante), s = string (estadio), s = string (resultado), i = int (jornada)
+        $stmt->bind_param("iissi", $local, $visitante, $estadio, $resultado, $jornada);
         return $stmt->execute();
     }
 
     public function obtenerJornadas() {
-        $res = $this->conn->query("SELECT DISTINCT jornada FROM " . PartidosDAO::TABLA_PARTIDOS . " ORDER BY jornada");
+        $res = $this->conn->query("SELECT DISTINCT jornada FROM " . self::TABLA_PARTIDOS . " ORDER BY jornada");
         $jornadas = [];
         while ($row = $res->fetch_assoc()) $jornadas[] = (int)$row['jornada'];
         return $jornadas;

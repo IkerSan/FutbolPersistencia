@@ -63,9 +63,18 @@ function h($v)
         <form method="get" class="mb-3">
             <label>Jornada</label>
             <select name="jornada" class="form-select d-inline-block w-auto" onchange="this.form.submit()">
-                <?php for ($i = 1; $i <= max(10, count($jornadas)); $i++): ?>
-                    <option value="<?= $i ?>" <?= $i == $mostrarJornada ? 'selected' : '' ?>>Jornada <?= $i ?></option>
-                <?php endfor; ?>
+                <?php
+                if (!empty($jornadas)) {
+                    foreach ($jornadas as $j): ?>
+                        <option value="<?= (int)$j ?>" <?= $j == $mostrarJornada ? 'selected' : '' ?>><?= (int)$j ?></option>
+                    <?php endforeach;
+                } else {
+                    // fallback si no hay jornadas registradas
+                    for ($i = 1; $i <= 10; $i++): ?>
+                        <option value="<?= $i ?>" <?= $i == $mostrarJornada ? 'selected' : '' ?>><?= $i ?></option>
+                <?php endfor;
+                }
+                ?>
             </select>
             <a href="equipos.php" class="btn btn-link ms-3">Ir a Equipos</a>
         </form>
