@@ -5,6 +5,7 @@ class PartidosDAO extends GenericDAO {
 
     const TABLA_PARTIDOS = 'partidos';
 
+    #Para equipos.php, mostrar partidos segun la jornada
     public function selectByJornada($jornada) {
         $sql = "
             SELECT p.*, 
@@ -22,7 +23,6 @@ class PartidosDAO extends GenericDAO {
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    // Cambiado el orden y tipos de parámetros para coincidir con app/partidos.php
     public function insert($jornada, $local, $visitante, $estadio, $resultado) {
         // Validar que no se repitan partidos (misma jornada y mismos equipos)
         $check = $this->conn->prepare(
@@ -49,6 +49,7 @@ class PartidosDAO extends GenericDAO {
         return $jornadas;
     }
 
+    #Para obtener los partidos de un equipo concreto
     public function selectByEquipo($equipo_id) {
     $stmt = $this->conn->prepare("
         SELECT p.*, 

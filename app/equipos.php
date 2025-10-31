@@ -26,7 +26,7 @@ if (isset($_GET['set_team'])) {
     $team_id = (int)$_GET['set_team'];
     $_SESSION['last_team_id'] = $team_id;
 
-    // Si no hay usuario logueado, crear sesión básica
+    // Si no hay usuario logueado, crear sesión 
     if (!SessionHelper::loggedIn()) {
         $_SESSION['user'] = ['id' => 1, 'username' => 'invitado'];
     }

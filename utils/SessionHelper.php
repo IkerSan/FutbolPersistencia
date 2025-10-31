@@ -11,9 +11,7 @@
  */
 class SessionHelper
 {
-    /**
-     * Checks if the session is not started. In that case, it calls start.
-     */
+
     static function startSessionIfNotStarted()
     {
         if (session_status() == PHP_SESSION_NONE) {
