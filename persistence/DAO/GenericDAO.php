@@ -14,6 +14,6 @@ abstract class GenericDAO {
   //abstract protected function selectAll();
   //abstract protected function selectById($id);
   //abstract protected function update($id, $nombre, $password);
-  abstract protected function delete($id);
+  //abstract protected function delete($id);
 
 }

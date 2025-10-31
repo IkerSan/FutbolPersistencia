@@ -84,7 +84,7 @@ else {
                     <a class="nav-link" href="<?php echo $urlApp; ?>/app/equipos.php">Equipos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $urlApp; ?>/app/login.php">Partidos</a>
+                    <a class="nav-link" href="<?php echo $urlApp; ?>/app/partidos.php">Partidos</a>
                 </li>
             </ul>
         </div>

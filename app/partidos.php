@@ -1,7 +1,7 @@
 <?php
 // partidos_equipo.php
 require_once '../templates/header.php';
-require_once '../persistence/DAO/UserDAO.php';
+require_once '../persistence/DAO/PartidosDAO.php';
 require_once '../persistence/conf/PersistentManager.php';
 require_once '../utils/SessionHelper.php';
 

@@ -6,7 +6,7 @@ class EquiposDAO extends GenericDAO {
     const TABLA_EQUIPOS = 'equipos';
 
     public function selectAll() {
-        $query = "SELECT * FROM" . EquiposDAO::TABLA_EQUIPOS;
+        $query = "SELECT * FROM " . EquiposDAO::TABLA_EQUIPOS;  
         $result = $this->conn->query($query);
         $equipos = [];
         while ($row = $result->fetch_assoc()) {
@@ -16,22 +16,15 @@ class EquiposDAO extends GenericDAO {
     }
 
     public function insert($nombre, $estadio) {
-        $stmt = $this->conn->prepare("INSERT INTO" . EquiposDAO::TABLA_EQUIPOS . "(nombre, estadio) VALUES (?, ?)");
+        $stmt = $this->conn->prepare("INSERT INTO " . EquiposDAO::TABLA_EQUIPOS . " (nombre, estadio) VALUES (?, ?)"); 
         $stmt->bind_param("ss", $nombre, $estadio);
         return $stmt->execute();
     }
 
     public function selectById($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM" . EquiposDAO::TABLA_EQUIPOS . "WHERE id = ?");
+        $stmt = $this->conn->prepare("SELECT * FROM " . EquiposDAO::TABLA_EQUIPOS . " WHERE id = ?"); 
         $stmt->bind_param("i", $id);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
-
-    public function delete($id) {
-    $query = "DELETE FROM " . EquiposDAO::TABLA_EQUIPOS . " WHERE idUser =?";
-    $stmt = mysqli_prepare($this->conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $id);
-    return $stmt->execute();
-  }
 }

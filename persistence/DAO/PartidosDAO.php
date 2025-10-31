@@ -28,10 +28,4 @@ class PartidosDAO extends GenericDAO {
         return $stmt->execute();
     }
 
-    public function delete($id) {
-    $query = "DELETE FROM " . PartidosDAO::TABLA_PARTIDOS . " WHERE idUser =?";
-    $stmt = mysqli_prepare($this->conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $id);
-    return $stmt->execute();
-  }
 }
