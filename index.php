@@ -18,7 +18,7 @@ Y además no está en ASSETS
 
 <div class="container-fluid py-5 my-5 bg-light">
   <div id="bienvenida" class="container">
-    <h1 class='display-3'>Bienvenid@ a Artean</h1>
+    <h1 class='display-3'>Futbol Cuatrovientos</h1>
     <?php
     if ($loggedin) echo "<p class='display-6'> Has iniciado sesión: ".$user."</p>";
     else           echo "<p class='display-6'> por favor, regístrate o inicia sesión.</p>";
