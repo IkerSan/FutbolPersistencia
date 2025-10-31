@@ -76,15 +76,15 @@ else {
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="<?php echo $urlApp; ?>/index.php">Artean</a>
+        <a class="navbar-brand" href="<?php echo $urlApp; ?>/index.php">Inicio</a>
 
         <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav mr-auto mt-2 mt-md-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $urlApp; ?>/app/signup.php">Registrarse</a>
+                    <a class="nav-link" href="<?php echo $urlApp; ?>/app/equipos.php">Equipos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $urlApp; ?>/app/login.php">Entrar</a>
+                    <a class="nav-link" href="<?php echo $urlApp; ?>/app/login.php">Partidos</a>
                 </li>
             </ul>
         </div>
