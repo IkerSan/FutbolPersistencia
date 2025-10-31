@@ -48,4 +48,20 @@ class PartidosDAO extends GenericDAO {
         while ($row = $res->fetch_assoc()) $jornadas[] = (int)$row['jornada'];
         return $jornadas;
     }
+
+    public function selectByEquipo($equipo_id) {
+    $stmt = $this->conn->prepare("
+        SELECT p.*, 
+               e1.nombre AS local_nombre, 
+               e2.nombre AS visit_nombre
+        FROM partidos p
+        JOIN equipos e1 ON p.idLocal = e1.id
+        JOIN equipos e2 ON p.idVisitante = e2.id
+        WHERE p.idLocal = ? OR p.idVisitante = ?
+        ORDER BY p.jornada
+    ");
+    $stmt->bind_param("ii", $equipo_id, $equipo_id);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
 }
