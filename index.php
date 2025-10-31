@@ -1,12 +1,13 @@
 <?php
 require_once __DIR__ . '/utils/SessionHelper.php';
 
-// Redirige según estado de sesión: si está loggeado -> partidos, si no -> equipos
-if (SessionHelper::loggedIn()) {
-    header('Location: app/partidos.php');
-    exit;
+SessionHelper::startSessionIfNotStarted();
+
+// Redirige según estado de sesión
+if (SessionHelper::loggedIn() && isset($_SESSION['last_team_id'])) {
+    header('Location: /PHP/Futbol/app/partidosEquipo.php?equipo_id=' . $_SESSION['last_team_id']);
 } else {
-    header('Location: app/equipos.php');
-    exit;
+    header('Location: /PHP/Futbol/app/equipos.php');
 }
+exit;
 ?>

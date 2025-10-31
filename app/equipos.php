@@ -1,5 +1,4 @@
 <?php
-
 require_once '../templates/header.php';
 require_once '../persistence/DAO/EquiposDAO.php';
 require_once '../persistence/conf/PersistentManager.php';
@@ -17,10 +16,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nombre) && !empty($estadio)) {
         $equiposDAO->insert($nombre, $estadio);
-        header("Location: equipos.php"); // recarga la página para ver el nuevo equipo
+        header("Location: equipos.php");
         exit;
     }
 }
+
+// Guardar equipo en sesión cuando se hace clic en "Ver partidos"
+if (isset($_GET['set_team'])) {
+    $team_id = (int)$_GET['set_team'];
+    $_SESSION['last_team_id'] = $team_id;
+
+    // Si no hay usuario logueado, crear sesión básica
+    if (!SessionHelper::loggedIn()) {
+        $_SESSION['user'] = ['id' => 1, 'username' => 'invitado'];
+    }
+
+    header("Location: partidosEquipo.php?equipo_id=" . $team_id);
+    exit;
+}
+
+SessionHelper::startSessionIfNotStarted();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -63,7 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <td><?= htmlspecialchars($e['nombre']) ?></td>
                         <td><?= htmlspecialchars($e['estadio']) ?></td>
                         <td>
-                            <a href="partidosEquipo.php?equipo_id=<?= urlencode($e['id']) ?>" class="btn btn-primary btn-sm">
+                            <a href="equipos.php?set_team=<?= urlencode($e['id']) ?>"
+                                class="btn btn-primary btn-sm">
                                 Ver partidos
                             </a>
                         </td>

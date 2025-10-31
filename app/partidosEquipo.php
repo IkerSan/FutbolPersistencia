@@ -4,6 +4,21 @@ require_once '../persistence/DAO/PartidosDAO.php';
 require_once '../persistence/DAO/EquiposDAO.php';
 require_once '../persistence/conf/PersistentManager.php';
 
+SessionHelper::startSessionIfNotStarted();
+
+if (isset($_GET['equipo_id'])) {
+    // Guardar el ID del equipo en la sesión
+    $_SESSION['last_team_id'] = (int)$_GET['equipo_id'];
+    SessionHelper::setSession('user');
+    $equipo_id = (int)$_GET['equipo_id'];
+    $_SESSION['last_team_id'] = $equipo_id;
+    
+    // Si no hay usuario logueado, crear sesión básica
+    if (!SessionHelper::loggedIn()) {
+        $_SESSION['user'] = ['id' => 1, 'username' => 'invitado'];
+    }
+}
+
 // Obtener el id del equipo
 $equipo_id = isset($_GET['equipo_id']) ? (int)$_GET['equipo_id'] : 0;
 
@@ -16,6 +31,8 @@ $daoEquipos = new EquiposDAO();
 
 // Obtener info del equipo
 $equipo = $daoEquipos->selectById($equipo_id);
+
+SessionHelper::setSession($equipo['nombre']);
 
 // Obtener partidos del equipo
 $partidos = $daoPartidos->selectByEquipo($equipo_id);
